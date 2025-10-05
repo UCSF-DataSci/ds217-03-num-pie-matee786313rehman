@@ -326,3 +326,54 @@ cat output/analysis_report.txt
    - Access structured array fields with bracket notation: `data['column_name']`
    - Boolean indexing returns a filtered array: `data[data['heart_rate'] > 90]`
    - Use `.sum()` on boolean arrays to count True values
+    - Use f-string formatting with `.1f`
+
+## Windows Quick Start (PowerShell)
+
+If you're on Windows and `python3` fails (it often points to the Microsoft Store alias), use these PowerShell steps.
+
+1) Check available Python commands:
+
+```powershell
+Get-Command python, python3, py -ErrorAction SilentlyContinue | Format-Table -AutoSize
+```
+
+2) If a real Python is not installed, install one of the options below:
+
+- Install from python.org and enable "Add Python to PATH" during installation.
+- Or install via winget (example):
+
+```powershell
+# Search for packages first:
+winget search python
+# Then install a specific package id, for example Python 3.11 from the official win32 package:
+winget install --id Python.Python.3.11 -e --source winget
+```
+
+If winget returns Microsoft Store packages, you can also install from the Store or download the installer from python.org.
+
+3) Create and activate a virtual environment (recommended):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+# If PowerShell blocks scripts in this session, run:
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+4) Install requirements and run the generator:
+
+```powershell
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python generate_health_data.py
+```
+
+5) Preview results:
+
+```powershell
+Get-Item .\health_data.csv | Select-Object Name, Length
+Get-Content .\health_data.csv -TotalCount 6
+```
+
+If you prefer, you can disable the Microsoft Store aliases under Settings > Apps > Advanced app settings > App execution aliases so a real Python installation on PATH is used.
